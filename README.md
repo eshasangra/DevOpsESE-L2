@@ -1,23 +1,127 @@
-# Jenkins Multistage Pipeline – Task 2
+# 🧩 Jenkins Multistage Pipeline – Task 2
 
 **App:** inventory-api  
 **Repo:** Jenkins-multistage-demo  
-**Student:** Esha Sangra  
-**Objective:** Implement a multi-stage Jenkins CI/CD pipeline using branch merging.
+**Student:** Esha Sangra
 
-## Branches
-- `feature-api` → Build + Test stages only  
-- `dev` → Build + Test + Deploy (triggered on merge from feature-api)
-- `feature-ui` → Frontend placeholder
+---
 
-## Jenkinsfile
-Defines three stages:
-1. **Build:** npm install & build
-2. **Test:** npm test
-3. **Deploy:** Executes only for `dev` branch using `when { branch 'dev' }`
+## 🎯 Objective
 
-## Summary
-✔️ Jenkins Multibranch Pipeline configured  
-✔️ Auto-branch detection from GitHub  
-✔️ Pipeline triggered on merge (feature-api → dev)  
-✔️ Multi-stage execution per branch  
+To implement a **Multistage Jenkins Pipeline** with automatic builds and branch-based deployment.
+
+**Pipeline Stages:**
+
+1. **Build** → Installs dependencies and builds the app
+2. **Test** → Runs test scripts
+3. **Deploy** → Runs only for `dev` branch (conditional deployment)
+
+---
+
+## 🌳 Branch Structure
+
+| Branch Name   | Purpose                  | Stages                |
+| ------------- | ------------------------ | --------------------- |
+| `feature-api` | Backend/API logic        | Build + Test          |
+| `feature-ui`  | Frontend work            | (inactive)            |
+| `dev`         | Integration + Deployment | Build + Test + Deploy |
+
+---
+
+## 🔄 Jenkins Multibranch Pipeline
+
+Jenkins automatically detected and created jobs for each branch in the GitHub repo.
+
+✅ `feature-api` → executes Build + Test  
+✅ `dev` → executes Build + Test + Deploy  
+❌ `feature-ui` → skipped (no Jenkinsfile)
+
+**Trigger:**  
+Merging `feature-api` → `dev` triggers the pipeline automatically.
+
+---
+
+## ⚙️ Jenkinsfile Overview
+
+```groovy
+pipeline {
+  agent any
+  options { timestamps() }
+
+  stages {
+    stage('Build') {
+      steps {
+        echo "=== BUILD STAGE ==="
+        echo "Branch: ${env.BRANCH_NAME}"
+        sh '''
+          node -v
+          npm -v
+          cd inventory-api
+          npm install
+          npm run build
+        '''
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo "=== TEST STAGE ==="
+        sh '''
+          cd inventory-api
+          npm test
+        '''
+      }
+    }
+
+    stage('Deploy') {
+      when { branch 'dev' }
+      steps {
+        echo "=== DEPLOY STAGE ==="
+        sh '''
+          cd inventory-api
+          echo "docker build -t inventory-api:latest ."
+          echo "docker run -d -p 8080:8080 inventory-api"
+        '''
+      }
+    }
+  }
+
+  post {
+    success { echo "PIPELINE SUCCESS for branch ${env.BRANCH_NAME}" }
+    failure { echo "PIPELINE FAILED for branch ${env.BRANCH_NAME}" }
+  }
+}
+```
+
+=== BUILD STAGE ===
+Branch: dev
+
+- cd inventory-api
+- npm install
+  up to date, audited 1 package in 362ms
+  found 0 vulnerabilities
+- npm run build
+  > inventory-api@1.0.0 build
+  > echo Building inventory-api...
+  > Building inventory-api...
+
+=== TEST STAGE ===
+
+- cd inventory-api
+- npm test
+
+=== DEPLOY STAGE ===
+Simulating Docker build and run...
+
+PIPELINE SUCCESS for branch dev
+Finished: SUCCESS
+
+---
+
+✅ Now you can just:
+
+```bash
+git add README.md
+git commit -m "Finalize README with screenshots and pipeline summary"
+git push origin dev
+```
