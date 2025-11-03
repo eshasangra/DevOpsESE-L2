@@ -95,14 +95,4 @@ pipeline {
 
 ---
 
-## 🧪 Jenkins Console Output (Dev Branch)
-
-![Console Output](./docs/screenshots/console-output-dev.png)
-
-## 🧱 Build & Test Stage (Dev Branch)
-
-![Build & Test Stage](./docs/screenshots/build-test-stage-dev.png)
-
-## ✅ Pipeline Success (Dev Branch)
-
-![Pipeline Success](./docs/screenshots/pipeline-success-dev.png)
+![Test one](./docs/screenshots/console-output-dev.png)
