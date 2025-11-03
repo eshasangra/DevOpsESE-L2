@@ -92,36 +92,3 @@ pipeline {
   }
 }
 ```
-
-=== BUILD STAGE ===
-Branch: dev
-
-- cd inventory-api
-- npm install
-  up to date, audited 1 package in 362ms
-  found 0 vulnerabilities
-- npm run build
-  > inventory-api@1.0.0 build
-  > echo Building inventory-api...
-  > Building inventory-api...
-
-=== TEST STAGE ===
-
-- cd inventory-api
-- npm test
-
-=== DEPLOY STAGE ===
-Simulating Docker build and run...
-
-PIPELINE SUCCESS for branch dev
-Finished: SUCCESS
-
----
-
-✅ Now you can just:
-
-```bash
-git add README.md
-git commit -m "Finalize README with screenshots and pipeline summary"
-git push origin dev
-```
