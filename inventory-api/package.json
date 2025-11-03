@@ -1,0 +1,14 @@
+{
+  "name": "inventory-api",
+  "version": "1.0.0",
+  "description": "Demo inventory API service for Jenkins multistage pipeline",
+  "main": "server.js",
+  "scripts": {
+    "build": "echo Building inventory-api...",
+    "test": "echo Running unit tests... && exit 0",
+    "start": "node server.js"
+  },
+  "author": "esha sangra",
+  "license": "MIT",
+  "dependencies": {}
+}
